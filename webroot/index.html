@@ -1,0 +1,109 @@
+<html>
+<head>
+     <meta charset='utf-8'>
+     <title>#saikin_go</title>
+    <link rel="stylesheet" href="css/index.css">
+     <script type="text/javascript">
+     //var wsUri = "ws://echo.websocket.org/";
+     var wsUri = "ws://localhost:9999/echo";                                    
+ 
+     var output;
+     function init() {
+         output = document.getElementById("output")
+         testWebSocket();
+     }
+ 
+     function testWebSocket() {
+         websocket = new WebSocket(wsUri);
+         websocket.onopen = function(evt) {
+             onOpen(evt)
+         };
+         websocket.onclose = function(evt) {
+             onClose(evt)
+         };
+         websocket.onmessage = function(evt) {
+             onMessage(evt)
+         };
+         websocket.onerror = function(evt) {
+             onError(evt)
+         };
+     }
+ 
+     function onOpen(evt) {
+         writeToScreen("接続成功！！<br>自分のtwitterアカウントを追加しよう！");
+         //doSend("接続中…");
+     }
+     function onClose(evt) {
+         writeToScreen("DISCONNECTED");
+     }
+ 
+     function onMessage(evt) {
+//         writeToScreen('<span style="color: blue;">'+ evt.data+'</span>');
+         chatAppear(evt.data);
+         //websocket.close
+     }
+ 
+     function onError(evt) {
+         writeToScreen('<span style="color: red;">ERROR:</span>'+ evt.data);
+     }
+
+     function doSend(message) {
+         websocket.send(message);
+     }
+ 
+     function writeToScreen(message) {
+         var pre = document.createElement("p");
+         pre.style.wordWrap = "break-word";
+         pre.innerHTML = message;
+         output.appendChild(pre);
+     }
+ 
+     function sendChat(){
+         var x = Math.floor(Math.random() * 1024);
+         var y = Math.floor(Math.random() * 512);
+         var colors = ['Red','Yellow','Blue','LawnGreen']
+         var color = colors[Math.floor(Math.random() * 4)];
+         var str = document.querySelector("#chatmessage");
+         var state = {"x":x,"y":y,"color":color,"str":str};
+         doSend(state);
+         str.value = "";
+     }
+         
+    function chatAppear(str){
+        var colors = ['Red','Yellow','Blue','LawnGreen']
+        var canvas_zone = document.getElementById('canvas_zone');
+        var tweet = document.createElement('div');
+        var tweet_content = document.createTextNode(str)
+        tweet.appendChild(tweet_content);
+//        tweet.height = '100px';
+//        tweet.width = '50px';
+        tweet.style.padding = '10px';
+        tweet.style.borderRadius = '4px';
+        tweet.className = 'tweets';
+        tweet.style.position = 'absolute';
+        tweet.style.backgroundColor = colors[Math.floor(Math.random() * 4)];
+        tweet.style.top = Math.floor(Math.random() * 512)+'px';
+        tweet.style.left = Math.floor(Math.random() * 1024)+'px';
+        canvas_zone.appendChild(tweet);
+    }
+    
+//    function makeColor(){
+//        var colors = ['0','1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f'];
+//        var color = '#'+colors[Math.floor(Math.random() * 12)]++colors[Math.floor(Math.random() * 12)]+colors[Math.floor(Math.random() * 12)]+colors[Math.floor(Math.random() * 12)]+colors[Math.floor(Math.random() * 12)]+colors[Math.floor(Math.random() * 12)];
+//        return color;
+//    }
+     window.addEventListener("load", init, false);
+ 
+     </script>
+ 
+ </head>
+ <body>
+     <h2>#saikin_go</h2>
+     <div class="join_zone">
+         <input id="chatmessage" type="text" value="@"/>
+         <input type="button" value="join" onClick="sendChat()" />
+         <div id="output"></div>
+     </div>
+     <div id="canvas_zone"></div>
+ </body>
+ </html>

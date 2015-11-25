@@ -1,0 +1,26 @@
+body {
+    background-color: black;
+    color: white;
+    margin: 0;
+}
+
+h2 {
+/*    background-color:chartreuse;*/
+    text-align: center;
+    color:chartreuse;
+    padding: 10px;
+    margin: 0;
+    border-bottom: 2px solid white;
+}
+
+#canvas_zone {
+    color: white;
+    background-color: aqua;
+    width: 1024px;
+    height: 512px;
+    position: relative;
+}
+
+.join_zone {
+    text-align: right;
+}
